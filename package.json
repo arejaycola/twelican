@@ -10,8 +10,12 @@
 	},
 	"dependencies": {
 		"body-parser": "^1.18.3",
+		"dotenv": "^8.2.0",
 		"express": "^4.16.4",
+		"got": "^11.8.1",
+		"needle": "^2.6.0",
 		"nodemon": "^2.0.6",
+		"oauth-1.0a": "^2.2.6",
 		"vhost": "^3.0.2"
 	},
 	"devDependencies": {
