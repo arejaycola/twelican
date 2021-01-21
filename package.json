@@ -11,7 +11,8 @@
 	"dependencies": {
 		"body-parser": "^1.18.3",
 		"express": "^4.16.4",
-		"nodemon": "^2.0.6"
+		"nodemon": "^2.0.6",
+		"vhost": "^3.0.2"
 	},
 	"devDependencies": {
 		"concurrently": "^4.1.2"
