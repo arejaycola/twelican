@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 
 const Search = () => {
-	const [text, setText] = useState('');
+	const [searchText, setSearchText] = useState('');
 
 	const onFormSubmit = async (e) => {
 		e.preventDefault();
 
-		const response = await Axios.get('/api/hello');
+		/* Just search Rob if no text is inputted. */
+		const response = await Axios.get(`/search/${searchText ? searchText : 'Rob'}`);
 		console.log(response.data);
 	};
 
@@ -15,9 +16,9 @@ const Search = () => {
 		<form onSubmit={(e) => onFormSubmit(e)}>
 			<input
 				onChange={(e) => {
-					setText(e.target.value);
+					setSearchText(e.target.value);
 				}}
-				value={text}
+				value={searchText}
 				placeholder="Enter a verified Twitter Account"
 				type="text"
 				className="user-search"

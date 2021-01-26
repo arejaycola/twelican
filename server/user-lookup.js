@@ -1,43 +1,30 @@
-const needle = require('needle');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
-// The code below sets the bearer token from your environment variables
-// To set environment variables on Mac OS X, run the export command below from the terminal:
-// export BEARER_TOKEN='YOUR-TOKEN'
-const token = process.env.BEARER_TOKEN;
+const Twitter = require('twitter');
 
-console.log(process.env.BEARER_TOKEN);
+const client = new Twitter({
+	consumer_key: process.env.CONSUMER_KEY,
+	consumer_secret: process.env.CONSUMER_SECRET,
+	access_token_key: process.env.ACCESS_TOKEN_KEY,
+	access_token_secret: process.env.ACCESS_TOKEN_SECRET,
+});
 
-const endpointURL = 'https://api.twitter.com/2/users/by?usernames=';
+async function performUserSearch(searchString) {
+	try {
+		const response = await client.get(`https://api.twitter.com/1.1/users/search.json`, {
+			q: `${searchString}`,
+			count: 20,
+			page: 1,
+			include_entities: false,
+		});
 
-async function getRequest() {
-	const params = {
-		usernames: 'TwitterDev,TwitterAPI', // Edit usernames to look up
-		'user.fields': 'created_at,description', // Edit optional query parameters here
-	};
-
-	const res = await needle('get', endpointURL, params, {
-		headers: {
-			authorization: `Bearer ${token}`,
-		},
-	});
-
-	if (res.body) {
-		return res.body;
-	} else {
-		throw new Error('Unsuccessful request');
+		return response;
+	} catch (e) {
+		throw new Error(`Error performing user search for ${searchString}. ${e}`);
 	}
 }
 
-(async () => {
-	try {
-		// Make request
-		const response = await getRequest();
-		console.log(response);
-	} catch (e) {
-		console.log(e);
-		process.exit(-1);
-	}
-	process.exit();
-})();
+module.exports = {
+	performUserSearch,
+};
